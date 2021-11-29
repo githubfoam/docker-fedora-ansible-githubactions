@@ -3,7 +3,7 @@ name: "fedora 34 ansible local CI workflow"
 
 on:
   push:
-    branches: [ test ]
+    branches: [ main ]
   schedule:
       # https://crontab.guru/examples.html #every friday at midnight  
       - cron:  '0 0 * * FRI' 
