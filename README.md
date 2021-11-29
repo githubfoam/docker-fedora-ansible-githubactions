@@ -1,2 +1,3 @@
 # docker-fedora-ansible-githubactions
-docker fedora ansible githubactions
+[![fedora 34 ansible local CI workflow](https://github.com/githubfoam/docker-fedora-ansible-githubactions/actions/workflows/fedora34-ansible-local-wf.yml/badge.svg?branch=main)](https://github.com/githubfoam/docker-fedora-ansible-githubactions/actions/workflows/fedora34-ansible-local-wf.yml)  
+[![fedora ansible local CI workflow](https://github.com/githubfoam/docker-fedora-ansible-githubactions/actions/workflows/fedora-ansible-local-wf.yml/badge.svg?branch=main)](https://github.com/githubfoam/docker-fedora-ansible-githubactions/actions/workflows/fedora-ansible-local-wf.yml)  
