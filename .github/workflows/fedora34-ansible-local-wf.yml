@@ -1,0 +1,42 @@
+name: "fedora 34 ansible local CI workflow"
+
+
+on:
+  push:
+    branches: [ test ]
+  schedule:
+      # https://crontab.guru/examples.html #every friday at midnight  
+      - cron:  '0 0 * * FRI' 
+jobs:
+
+  ubuntu-latest-fedora34-job:
+    name: "docker  ansible fedora34"
+    runs-on: ubuntu-latest
+    env:
+      version: "latest"
+      name: "fedora34/ansible"
+      dockerdir: "dockerfiles"
+      dockerfile: "Dockerfile.fedora.34" 
+      playbookfile: "fedora34.yml"   
+    steps:
+    - uses: actions/checkout@v2
+    - name: "os fingerprinting"
+      run: |
+        hostnamectl status
+        lsb_release -a
+        lsb_release -d
+        cat /etc/lsb-release
+        cat /etc/issue
+        cat /etc/os-release
+        sudo apt-get install -y neofetch && neofetch    
+    - name: "playbook docker fedora34"
+      run: |
+          # destroyed afterwards (use --rm )
+          # all subsequent Dockerfile commands generate new images and the cache is not used
+          sudo docker build --no-cache --rm  -t ${name}:${version}  . --file ${dockerdir}/${dockerfile}
+          # syntax-check
+          sudo docker run -e ANSIBLE_FORCE_COLOR=1 --privileged --volume="${PWD}":/home/ansible:ro ${name} ansible-playbook -vvv /home/ansible/playbooks/${playbookfile} --syntax-check
+          #dry-run
+          sudo docker run -e ANSIBLE_FORCE_COLOR=1 --privileged --volume="${PWD}":/home/ansible:ro ${name} ansible-playbook -vvv /home/ansible/playbooks/${playbookfile} --check 
+          sudo docker run -e ANSIBLE_FORCE_COLOR=1 --privileged --volume="${PWD}":/home/ansible:ro ${name} ansible-playbook -vvv /home/ansible/playbooks/${playbookfile}
+                 
